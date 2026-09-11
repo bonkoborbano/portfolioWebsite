@@ -27,6 +27,10 @@ are no server rewrites to configure and no 404 fallback to set up.
 `.nojekyll` tells Pages to serve the files verbatim rather than running
 them through Jekyll.
 
+Favicon paths are relative like everything else, so they resolve on a
+project subpath. Regenerate them from the spiral with
+`sips -Z <size> assets/mark-spiral.png --out icons/<name>.png`.
+
 **Before making the repo public**, see the licensing note in
 `fonts/README.md` — the bundled Söhne file is a trial cut licensed for
 personal use, and publishing the site serves it to every visitor.
@@ -39,6 +43,7 @@ personal use, and publishing the site serves it to every visitor.
 | `styles.css` | All layout, the three page palettes, responsive rules |
 | `app.js` | Page copy, project list, and the hash router |
 | `assets/` | Photos and video — see `assets/README.md` |
+| `icons/` | Favicons, downscaled from `assets/mark-spiral.png` |
 | `fonts/` | Söhne Buch — see `fonts/README.md` |
 
 ## Routes

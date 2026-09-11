@@ -19,7 +19,7 @@ const site = {
       "Interactive Technology and Design Master\u2019s student.",
       "Residing in Copenhagen."
     ],
-    email: "blake.r@email.dk"
+    email: "blakejordan@email.dk"
   }
 };
 
