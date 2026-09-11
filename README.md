@@ -28,7 +28,12 @@ are no server rewrites to configure and no 404 fallback to set up.
 them through Jekyll.
 
 Favicon paths are relative like everything else, so they resolve on a
-project subpath. Regenerate them from the spiral with
+project subpath. That matters more than it looks: a browser's automatic
+`/favicon.ico` probe goes to the *domain* root, which under a project page
+is a different repo entirely — so `favicon.ico` is declared with a
+`<link>` rather than just left sitting at the root.
+
+Regenerate the PNGs from the spiral with
 `sips -Z <size> assets/mark-spiral.png --out icons/<name>.png`.
 
 **Before making the repo public**, see the licensing note in
@@ -43,7 +48,8 @@ personal use, and publishing the site serves it to every visitor.
 | `styles.css` | All layout, the three page palettes, responsive rules |
 | `app.js` | Page copy, project list, and the hash router |
 | `assets/` | Photos and video — see `assets/README.md` |
-| `icons/` | Favicons, downscaled from `assets/mark-spiral.png` |
+| `favicon.ico` | Root icon — 16/32/48, the fallback browsers probe for |
+| `icons/` | PNG icons, downscaled from `assets/mark-spiral.png` |
 | `fonts/` | Söhne Buch — see `fonts/README.md` |
 
 ## Routes
