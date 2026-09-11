@@ -1,0 +1,298 @@
+/* ---------------------------------------------------------------
+   Blake Jordan — portfolio
+   Font: drop the real files in /fonts and update the src below.
+   --------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Sohne";
+  src: url("fonts/sohne-buch.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg:    #808080;
+  --fg:    #ffffff;
+  --muted: #cfcfcf;
+
+  --name-size:  clamp(2rem, 3.1vw, 2.9rem);
+  --link-size:  clamp(1.05rem, 1.6vw, 1.5rem);
+  --body-size:  clamp(1rem, 1.4vw, 1.35rem);
+
+  --name-x:     min(22.5vw, 26rem);         /* fixed left edge of the name column */
+  --nav-w:      clamp(9rem, 12vw, 13rem);   /* space reserved to the right of it */
+  --gutter:     clamp(3rem, 6vw, 6rem);     /* left column that "Work" retreats into */
+  --gutter-gap: clamp(1.75rem, 4.5vw, 4.5rem);
+  --col-gap:    clamp(2rem, 5vw, 6.5rem);   /* nav / media / copy */
+  --row-gap:    clamp(1.8rem, 4.6vh, 3.4rem);
+  --item-gap:   clamp(1.5rem, 3vw, 3.4rem); /* between project names in the work row */
+
+  --slide:      .5s cubic-bezier(.22, .61, .36, 1);
+
+  --media-w:    clamp(15rem, 24vw, 26rem);  /* per-project override in app.js */
+  --copy-w:     clamp(15rem, 21.5vw, 22rem);
+}
+
+/* Per-view geometry ---------------------------------------------
+   Two-column views (front / work / about) sit far apart and centre on
+   their visible content, so the "Work" gutter collapses. Project pages
+   keep the gutter and pull the three columns closer together.
+
+   These are split across two attributes on purpose. `data-view` drives
+   the nav and flips on the click, so the work row can start sliding at
+   once. `data-content` drives the media/copy columns and flips later,
+   with the content swap — if it flipped on the click, the outgoing
+   photos would re-centre and visibly jump before they had faded. */
+body[data-view="home"],
+body[data-view="work"],
+body[data-view="about"] {
+  --gutter: 0px;
+  --gutter-gap: 0px;
+}
+
+body[data-content="home"],
+body[data-content="work"],
+body[data-content="about"] {
+  --col-gap: clamp(2.5rem, 17vw, 17rem);
+}
+body[data-content="project"] {
+  --col-gap: clamp(2rem, 8vw, 8.5rem);
+}
+
+/* Page palettes ------------------------------------------------- */
+body[data-theme="gray"]  { --bg:#808080; --fg:#ffffff; --muted:#cfcfcf; }
+body[data-theme="light"] { --bg:#ffffff; --fg:#000000; --muted:#9b9b9b; }
+body[data-theme="dark"]  { --bg:#000000; --fg:#ffffff; --muted:#8c8c8c; }
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html, body { min-height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Sohne", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: var(--body-size);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color .5s ease, color .5s ease;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Stage ---------------------------------------------------------
+   The nav is pinned, so it holds the same spot on every page. The
+   remaining space to its right is where media and copy get centred. */
+.stage {
+  min-height: 100svh;
+  display: flex;
+  padding: clamp(2rem, 8vh, 6rem) clamp(1.5rem, 5vw, 5rem);
+  padding-left: calc(var(--name-x) + var(--nav-w));
+}
+
+.layout {
+  /* margin:auto rather than align-items:center so a tall column
+     overflows downward instead of being clipped at the top */
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--col-gap);
+  opacity: 1;
+  transition: opacity .28s ease;
+}
+.layout.is-leaving { opacity: 0; }
+
+/* Nav ----------------------------------------------------------- */
+.nav {
+  position: fixed;
+  top: 50%;
+  left: calc(var(--name-x) - var(--gutter) - var(--gutter-gap));
+  transform: translateY(-50%);
+  display: grid;
+  grid-template-columns: var(--gutter) max-content;
+  align-items: baseline;
+  row-gap: var(--row-gap);
+  column-gap: var(--gutter-gap);
+}
+
+.nav__name {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: var(--name-size);
+  line-height: 1.16;
+  color: var(--muted);
+  transition: color .25s ease,
+              transform var(--slide),
+              opacity .3s ease;
+}
+.nav__name.is-current { color: var(--fg); }
+
+.nav__before {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: end;
+  display: flex;
+  gap: var(--item-gap);
+  white-space: nowrap;
+}
+
+.nav__after {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  gap: var(--item-gap);
+  white-space: nowrap;
+}
+
+.nav__about {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: start;   /* otherwise it stretches to the column width,
+                            giving "About" a hit area twice its own word */
+}
+
+/* Matched hover/click targets. Without this "About" fills its grid track
+   while "Work" is only as wide as the word, so the pointer finds one and
+   skims past the other. The padding grows the target; the equal negative
+   margin keeps the text exactly where the layout put it. The name is left
+   alone — it's large enough already, and sits close to Work. */
+.nav__about,
+.nav__before .link,
+.nav__after .link {
+  padding: .45em .6em;
+  margin: -.45em -.6em;
+}
+
+.nav .link { font-size: var(--link-size); }
+.nav .nav__name { font-size: var(--name-size); }
+
+.link {
+  color: var(--muted);
+  transition: color .25s ease,
+              transform var(--slide),
+              opacity .3s ease;
+}
+.link.is-current,
+.link:hover,
+.link:focus-visible { color: var(--fg); }
+
+.link:focus-visible { outline: 1px solid currentColor; outline-offset: .35rem; }
+
+/* Outgoing nav items ---------------------------------------------
+   A link that leaves the DOM can't animate, so it's cloned into this
+   layer at its old position and faded out where it stood. */
+.nav-ghosts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.nav-ghosts .link {
+  position: absolute;
+  font-size: var(--link-size);
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity .28s ease;
+}
+
+/* Media column -------------------------------------------------- */
+.media {
+  width: var(--project-media-w, var(--media-w));
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.2vw, 2.2rem);
+}
+
+.media img,
+.media video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* set per image via `crop` in app.js — trims letterboxing and
+   matches the framing in the mockups without touching the file */
+.media img[style*="aspect-ratio"],
+.media video[style*="aspect-ratio"] { height: 100%; }
+
+/* Shown when an asset file is missing, so the layout still reads */
+.placeholder {
+  width: 100%;
+  aspect-ratio: var(--ar, 16 / 9);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  text-align: center;
+  font-size: .78rem;
+  line-height: 1.4;
+  letter-spacing: .02em;
+  color: var(--muted);
+  border: 1px dashed currentColor;
+  opacity: .7;
+  word-break: break-word;
+}
+
+/* Front page mark ---------------------------------------------- */
+.mark {
+  flex: none;
+  width: clamp(12rem, 26vw, 25rem);
+}
+.mark img {
+  display: block;
+  width: 100%;
+  height: auto;
+  will-change: transform;   /* app.js drives rotate() here every frame */
+}
+
+/* Copy column --------------------------------------------------- */
+.copy {
+  width: var(--copy-w);
+  flex: none;
+}
+.copy p { margin: 0 0 1.55em; }
+.copy p:last-child { margin-bottom: 0; }
+.copy a.email { color: var(--muted); transition: color .25s ease; }
+.copy a.email:hover { color: var(--fg); }
+
+/* Narrow screens ------------------------------------------------ */
+@media (max-width: 900px) {
+  :root,
+  body[data-view],
+  body[data-content] {
+    --gutter: 0px;
+    --gutter-gap: 0px;
+    --col-gap: clamp(2rem, 6vh, 3.5rem);
+    --media-w: 100%;
+    --copy-w: 100%;
+  }
+  .media { width: 100%; }
+  .stage {
+    flex-direction: column;
+    padding-top: clamp(3rem, 12vh, 6rem);
+    padding-left: clamp(1.5rem, 5vw, 5rem);
+  }
+  .layout { margin: 0 auto 0 0; }
+  .nav {
+    position: static;
+    transform: none;
+    margin-bottom: clamp(1.5rem, 5vh, 3rem);
+  }
+  .layout { flex-direction: column; align-items: flex-start; width: 100%; max-width: 34rem; }
+  .nav { grid-template-columns: max-content; row-gap: clamp(1.2rem, 3vh, 2rem); }
+  .nav__name,
+  .nav__before,
+  .nav__after,
+  .nav__about { grid-column: 1; grid-row: auto; justify-self: start; }
+  .nav__before:empty { display: none; }
+  .nav__after { flex-wrap: wrap; row-gap: .5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
