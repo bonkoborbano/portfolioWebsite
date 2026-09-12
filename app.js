@@ -34,9 +34,9 @@ const projects = [
       { type: "image", src: "assets/tacet-vr-3.png", w: 262, h: 257, alt: "Lit forms in a dark virtual landscape" }
     ],
     text: [
-      "What happens when stories break the confines of their medium to pursue a new reality?",
-      "Tacet VR is built upon the short film Tacet by director Ahmed El Kholy, to challenge the classical narrative structure and experiment with the audience as the driving force of its progression.",
-      "Developed in collaboration with Kholy, the experience allow for players to embody the film\u2019s main character on a journey through the unknown and the uncertain."
+      "What happens when a story breaks the confines of its medium to pursue a new reality?",
+      "Tacet VR is built upon the short film Tacet, directed by Ahmed El Kholy, and reimagines its narrative to challenge classical storytelling structures, placing the audience at the center of its progression.",
+      "Developed in collaboration with El Kholy, the experience lets players embody the film\u2019s protagonist on a journey through the unknown and the uncertain."
     ]
   },
   {
@@ -49,9 +49,9 @@ const projects = [
       { type: "image", src: "assets/ipasif-3.png", w: 1200, h: 691, alt: "The Pure Data control interface" }
     ],
     text: [
-      "An interactive proof of concept created in collaboration with sound artist Lars Greve and play director Tina Tarpgaard.",
-      "At the intersection of technology and artistry we sought to find a common language and demonstrate the capabilities of tangible and digital interfaces within creation.",
-      "A modular framework that allowed artists to grasp the possibilities of working with an instrument beyond their immediate abilities."
+      "An interactive proof of concept created with sound artist Lars Greve and theater director Tina Tarpgaard, exploring the intersection of technology and artistry.",
+      "The project sought a common language between tangible and digital interfaces, resulting in a modular framework that let artists grasp the possibilities of working with an instrument beyond their immediate skillset.",
+      "Reactive visual, physical, and auditory components combine into an experience adaptable to any practical use case."
     ]
   },
   {
@@ -64,9 +64,9 @@ const projects = [
       { type: "image", src: "assets/spellbound-3.jpg", w: 1400, h: 785, alt: "Night-time castle level with a glowing rune" }
     ],
     text: [
-      "SpellBound was created to investigate collaborative tendencies in video games.",
-      "Together players must cast spells consisting of combinations of symbols unique to their controller. The act of teamwork was intended to bring the players closer together and create trust between them.",
-      "Designed on the principles of the classic arcade game Time Crisis, players are moved through the landscape facing levels increasing difficulty."
+      "SpellBound investigates collaborative tendencies in video games.",
+      "Together, players cast spells built from combinations of symbols unique to their controller, a mechanic designed to foster teamwork and build trust between them.",
+      "Built on the principles of the classic arcade game Time Crisis, players are moved through the environment as they face levels of increasing difficulty."
     ]
   },
   {
@@ -77,7 +77,7 @@ const projects = [
       { type: "video", src: "assets/b2b-1.mp4", poster: "assets/b2b-1-poster.jpg", ar: "16 / 9" }
     ],
     text: [
-      "Through B2B, Blake Jordan and close collaborator, Ahmed El Kholy, explore their shared language in film and sound with these short vignettes."
+      "Through B2B, Blake Jordan and close collaborator Ahmed El Kholy explore their shared language in film and sound across a series of short vignettes."
     ]
   }
 ];
